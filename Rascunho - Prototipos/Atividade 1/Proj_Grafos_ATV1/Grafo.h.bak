@@ -1,0 +1,34 @@
+#ifndef GRAFO_H_INCLUDED
+#define GRAFO_H_INCLUDED
+
+
+///###############################################
+///DEFININDO O TIPO GRAFOS/VERTICI/ARESTA
+///###############################################
+typedef struct grafo{
+    int Numero_Vertice;
+    int Numero_Aresta;
+    int eh_ponderado; // [1] VERDADEIRO // [0] FALSO
+    struct vertice *Primeiro_Vertice;
+
+}Grafo;
+typedef struct vertice{
+    int Id;
+    int Grau_Vertice;
+
+    struct aresta *Primeira_Aresta;
+    struct vertice *Proximo_Vertice;
+
+}Vertice;
+typedef struct aresta{
+    int Peso;
+    int Id_Vertice;
+    struct aresta *Proxima_Aresta;
+
+}Aresta;
+
+
+
+
+
+#endif // GRAFO_H_INCLUDED
