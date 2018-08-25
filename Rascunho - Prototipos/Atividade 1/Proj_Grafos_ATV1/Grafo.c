@@ -40,19 +40,6 @@ Aresta *Cria_Nova_Aresta(int Peso, int Id_Vertice){
 }
 
 
-GrafoMatriz *Cria_Novo_Grafo_Matriz(int ehPonderado,int ordem){
-
-    GrafoMatriz *novo_grafo = (Grafo*) malloc(sizeof(Grafo));
-
-    novo_grafo->coluna = ordem;
-    novo_grafo->linha = ordem;
-    novo_grafo->Matriz =(int*) malloc(sizeof col*lin (int))
-    novo_grafo->eh_ponderado = ehPonderado;
-
-
-    return novo_grafo;
-}
-
 ///#############################
 ///MANIPULANDO AS ESTRUTURAS
 ///#############################

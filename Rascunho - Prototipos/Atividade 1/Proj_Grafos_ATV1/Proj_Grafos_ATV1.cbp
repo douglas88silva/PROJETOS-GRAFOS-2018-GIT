@@ -38,11 +38,11 @@
 		<Unit filename="Grafo.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="Grafo.h">
-			<Option compile="1" />
-			<Option link="1" />
-			<Option target="&lt;{~None~}&gt;" />
+		<Unit filename="Grafo.h" />
+		<Unit filename="Grafo_Matriz.c">
+			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="Grafo_Matriz.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>

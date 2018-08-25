@@ -28,14 +28,6 @@ typedef struct aresta{
 }Aresta;
 
 
-typedef struct grafoMatriz{
-    int linha;
-    int coluna;
-    int *Matriz[][];
-    int eh_ponderado; // [1] VERDADEIRO // [0] FALSO
-
-
-}GrafoMatriz;
 
 
 Grafo *Cria_Novo_Grafo(int ehPonderado);
