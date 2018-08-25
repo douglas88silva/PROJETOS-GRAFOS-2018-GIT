@@ -198,7 +198,61 @@ void Imprime_Todas_Arestas(Grafo *grafo){
         printf("\n");
     }
 }
+void Imprime_Grafo(Grafo *grafo)
+{
+    if (grafo == NULL)
+    {
+        printf("Grafo nulo\n");
+        return;
+    }
 
+     if (grafo->Primeiro_Vertice == NULL)
+    {
+        printf("Gravo sem vértices");
+        return;
+    }
+    printf("\n\n############# IMPRIMINDO GRAFO #############\n\n");
+    printf("[V]\t[ARESTA]\n");
+
+    if(grafo->eh_ponderado)
+    {
+        for (Vertice *v = grafo->Primeiro_Vertice; v != NULL; v = v->Proximo_Vertice)
+        {
+            printf("[%d] | ", v->Id);
+
+            if (v->Primeira_Aresta == NULL)
+            {
+                printf("");
+            }
+            else
+            {
+                for (Aresta *a = v->Primeira_Aresta; a != NULL; a = a->Proxima_Aresta)
+                    printf("[%d (P%d)] -> ", a->Id_Vertice,a->Peso);
+            }
+            printf("|\n");
+
+        }
+    }
+    else
+    {
+        for (Vertice *v = grafo->Primeiro_Vertice; v != NULL; v = v->Proximo_Vertice)
+        {
+            printf("[%d] | ", v->Id);
+
+            if (v->Primeira_Aresta == NULL)
+            {
+                printf("");
+            }
+            else
+            {
+                for (Aresta *a = v->Primeira_Aresta; a != NULL; a = a->Proxima_Aresta)
+                    printf("%d ->", a->Id_Vertice);
+            }
+            printf("|\n");
+
+        }
+    }
+}
 
 void Exclui_Aresta(Vertice *vertice, int Id){
     if (vertice->Primeira_Aresta == NULL)

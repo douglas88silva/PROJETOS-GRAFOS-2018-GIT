@@ -43,6 +43,7 @@ Aresta *Busca_Aresta(Vertice *vertice, int Id_Vertice);
 
 void Imprime_Todos_Vertices(Grafo *grafo);
 void Imprime_Todas_Arestas(Grafo *grafo);
+void Imprime_Grafo(Grafo *grafo);
 
 void Exclui_Aresta(Vertice *vertice, int Id);
 void Excluir_Todas_Aresta_Vertice(Grafo *grafo, Vertice *vertice);

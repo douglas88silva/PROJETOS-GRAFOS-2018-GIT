@@ -176,8 +176,11 @@ int main()
         char arq_grafo_ponderado[100] = "grafoPonderado.txt";
         char arq_grafo[100] = "grafo.txt";
 
-        Grafo *grafo = Carrega_Arquivo_Sem_Menu(1,arq_grafo_ponderado);
-        Grafo *grafoPonderado = Carrega_Arquivo_Sem_Menu(0,arq_grafo);
+        Grafo *grafoPonderado = Carrega_Arquivo_Sem_Menu(1,arq_grafo_ponderado);
+        Grafo *grafo = Carrega_Arquivo_Sem_Menu(0,arq_grafo);
+
+        Imprime_Grafo(grafo);
+        Imprime_Grafo(grafoPonderado);
 
 
 
