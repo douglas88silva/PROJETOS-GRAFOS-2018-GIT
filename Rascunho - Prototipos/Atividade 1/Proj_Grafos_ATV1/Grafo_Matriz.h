@@ -6,6 +6,13 @@
 ///DEFININDO O TIPO GRAFOS
 ///###############################################
 
+//typedef struct verticeM{
+//    int id;
+//    int Grau_Vertice;
+//
+//
+//}VerticeMatriz;
+
 
 typedef struct grafoMatriz{
 
@@ -20,21 +27,10 @@ typedef struct grafoMatriz{
 
 
 GrafoMatriz *Cria_Novo_Grafo_Matriz(int ehPonderado,int ordem);
-//Vertice *Cria_Novo_Vertice(int Id);
-//Aresta *Cria_Nova_Aresta(int Peso, int Id_Vertice);
 
 void Insere_Vertice_Matriz(GrafoMatriz *grafo, int vertice);
-//void Insere_Aresta(Vertice *vertice, int Id_Vertice, int Peso_Aresta);
-//void Popula_Grafo(Grafo *grafo, int Id1, int Id2, int Peso);
-//
-//Vertice *Busca_Vertice_Pela_Lista_Adjacencia(Grafo *grafo, int Id);
-//Vertice *Busca_Vertice(Grafo *grafo, int Id);
-//Aresta *Busca_Aresta(Vertice *vertice, int Id_Vertice);
-//
-//void Imprime_Todos_Vertices(Grafo *grafo);
-//void Imprime_Todas_Arestas(Grafo *grafo);
-//void Imprime_Grafo(Grafo *grafo);
-//
+
+
 //void Exclui_Aresta(Vertice *vertice, int Id);
 //void Excluir_Todas_Aresta_Vertice(Grafo *grafo, Vertice *vertice);
 //void Exclui_Vertice(Grafo *grafo, int Id);

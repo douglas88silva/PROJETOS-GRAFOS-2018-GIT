@@ -212,7 +212,7 @@ void Imprime_Grafo(Grafo *grafo)
         printf("Gravo sem vértices");
         return;
     }
-    printf("\n\n############# IMPRIMINDO GRAFO #############\n\n");
+    printf("\n\n############# IMPRIMINDO GRAFO (Lista de adjacencia) #############\n\n");
     printf("[V]\t[ARESTA]\n");
 
     if(grafo->eh_ponderado)

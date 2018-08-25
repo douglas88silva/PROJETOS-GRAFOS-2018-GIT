@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <dirent.h>
-#include "Arquivo.h"
-#include "Grafo.h"
-#include "Grafo_Matriz.h"
+#include "Arquivo.h" ///MODULO DE LEITURA DE ARQUIVO
+#include "Grafo.h" ///LISTRA DE ADJASCENCIA
+#include "Grafo_Matriz.h" ///MATRIZ DE ADJACENCIA
 
 ///###################################################################
 ///####################### CARREGANDO COM MENU #######################
@@ -95,8 +95,6 @@ void Carrega_Arquivo(){
 }
 
 
-
-
 ///###################################################################
 ///####################### CARREGANDO SEM MENU #######################
 ///###################################################################
@@ -167,7 +165,6 @@ Grafo *Carrega_Arquivo_Sem_Menu(int opcao, char *nome_arquivo)
     return novo_grafo;
 
 }
-
 
 Grafo *Carrega_Arquivo_Sem_Menu_Matriz(int opcao, char *nome_arquivo)
 {
@@ -250,23 +247,34 @@ Grafo *Carrega_Arquivo_Sem_Menu_Matriz(int opcao, char *nome_arquivo)
 int main()
 {
 
-        //Carrega_Arquivo();
 
+        ///NOMES DOS ARQUIVOS .TXT QUE ESTAO SENDO CARREGADOS
         char arq_grafo_ponderado[100] = "grafoPonderado.txt";
         char arq_grafo[100] = "grafo.txt";
 
+        ///CRIANDO UMA INSTANCIA DE GRAFO PONDERADA E OUTRA NAO UTILIZANDO LISTA DE ADJACENCIA
         Grafo *grafoPonderado = Carrega_Arquivo_Sem_Menu(1,arq_grafo_ponderado);
         Grafo *grafo = Carrega_Arquivo_Sem_Menu(0,arq_grafo);
 
+        ///IMPRIMINDO OS GRAFOS E O GRAU DE UM VERTICE
         Imprime_Grafo(grafo);
+        printf("O grau do vertice %d = %d",grafo->Primeiro_Vertice->Id,grafo->Primeiro_Vertice->Grau_Vertice);
+
         Imprime_Grafo(grafoPonderado);
+        printf("O grau do vertice %d = %d",grafoPonderado->Primeiro_Vertice->Id,grafoPonderado->Primeiro_Vertice->Grau_Vertice);
 
 
+        ///CRIANDO UMA INSTANCIA DE GRAFO PONDERADA E OUTRA NAO, UTILIZANDO MATRIZ DE ADJACENCIA
         Grafo *grafoPonderadoMatriz = Carrega_Arquivo_Sem_Menu_Matriz(1,arq_grafo_ponderado);
         Grafo *grafoMatriz = Carrega_Arquivo_Sem_Menu_Matriz(0,arq_grafo);
 
         Imprime_Grafo_Matriz(grafoPonderadoMatriz);
+        int grau = calcula_grau_Matriz(grafoPonderadoMatriz,1);
+        printf("O grau do vertice %d = %d",1,grau);
+
         Imprime_Grafo_Matriz(grafoMatriz);
+        grau = calcula_grau_Matriz(grafoMatriz,1);
+        printf("O grau do vertice %d = %d",1,grau);
 
 
 

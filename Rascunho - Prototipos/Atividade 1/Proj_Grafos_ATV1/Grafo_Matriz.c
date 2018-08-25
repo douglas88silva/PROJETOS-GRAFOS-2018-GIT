@@ -125,7 +125,7 @@ void Imprime_Grafo_Matriz(GrafoMatriz *grafo){
         printf("Gravo sem vértices");
         return;
     }
-    printf("\n\n############# IMPRIMINDO GRAFO #############\n\n");
+    printf("\n\n############# IMPRIMINDO GRAFO (Matriz Adjacencia) #############\n\n");
     printf("[Vertice]X[Vertice]\n");
 
         printf("| X ");
@@ -154,33 +154,37 @@ void Imprime_Grafo_Matriz(GrafoMatriz *grafo){
 }
 
 
-//
-//void Exclui_Aresta(Vertice *vertice, int Id){
-//    if (vertice->Primeira_Aresta == NULL)
-//        return;
-//
-//    Aresta *aux = NULL;
-//
-//    for (Aresta *aresta = vertice->Primeira_Aresta; aresta != NULL; aresta = aresta->Proxima_Aresta)
-//    {
-//        if (aresta->Id_Vertice == Id)
-//        {
-//            if (aux == NULL)
-//                vertice->Primeira_Aresta = aresta->Proxima_Aresta;
-//            else
-//                aux->Proxima_Aresta = aresta->Proxima_Aresta;
-//
-//            free(aresta);
-//            break;          // Após terminar a exclusão, não é necessário continuar no laço
-//        }
-//        else
-//        {
-//            aux = aresta;
-//        }
-//    }
-//
-//    vertice->Grau_Vertice--;
-//}
+
+void Exclui_Aresta_Matriz(GrafoMatriz *grafo, int id1,int id2){
+
+    if (grafo->Numero_Vertice == 0)
+        return;
+
+
+    int pos_id1 = busca_Vertice_Matriz(grafo,id1);
+    int pos_id2 = busca_Vertice_Matriz(grafo,id2);
+
+    grafo->Matriz[pos_id1][pos_id2] = 0;
+    grafo->Matriz[pos_id2][pos_id1] = 0;
+
+}
+
+int calcula_grau_Matriz(GrafoMatriz *grafo, int id)
+{
+    if (grafo->Numero_Vertice == 0)
+        return;
+
+    int pos = busca_Vertice_Matriz(grafo,id);
+    int grau = 0;
+
+    for(int i=0;i<grafo->Numero_Vertice;i++)
+    {
+        if(grafo->Matriz[pos][i]!=0)
+            grau++;
+    }
+
+    return grau;
+}
 //void Excluir_Todas_Aresta_Vertice(Grafo *grafo, Vertice *vertice){
 //    if (vertice == NULL || vertice->Primeira_Aresta == NULL)
 //        return;
