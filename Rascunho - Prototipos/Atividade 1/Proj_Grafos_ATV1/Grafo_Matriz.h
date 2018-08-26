@@ -1,4 +1,6 @@
 #ifndef GRAFO_MATRIZ_H_INCLUDED
+
+
 #define GRAFO_MATRIZ_H_INCLUDED
 
 
@@ -31,14 +33,6 @@ GrafoMatriz *Cria_Novo_Grafo_Matriz(int ehPonderado,int ordem);
 void Insere_Vertice_Matriz(GrafoMatriz *grafo, int vertice);
 
 
-//void Exclui_Aresta(Vertice *vertice, int Id);
-//void Excluir_Todas_Aresta_Vertice(Grafo *grafo, Vertice *vertice);
-//void Exclui_Vertice(Grafo *grafo, int Id);
-//
-//
-//void Libera_Grafo(Grafo *grafo);
-//void Libera_Lista_Arestas(Aresta *aresta);
-//void Libera_Lista_Verice(Vertice *vertice);
 
 
 #endif // GRAFO_MATRIZ_H_INCLUDED

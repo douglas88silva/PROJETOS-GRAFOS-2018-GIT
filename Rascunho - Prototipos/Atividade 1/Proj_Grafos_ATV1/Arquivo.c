@@ -1,3 +1,9 @@
+/**
+  * Atividade Grafos - Stênio - UFJF
+  * @authr douglas88silva@hotmail.com // MATRICULA:201535028
+*/
+
+
 #include <stdio.h>
 #include <dirent.h>
 
