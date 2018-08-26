@@ -99,8 +99,7 @@ void Carrega_Arquivo(){
 ///####################### CARREGANDO SEM MENU #######################
 ///###################################################################
 
-Grafo *Carrega_Arquivo_Sem_Menu(int opcao, char *nome_arquivo)
-{
+Grafo *Carrega_Arquivo_Sem_Menu(int opcao, char *nome_arquivo){
 
     printf("\n\nCarregando arquivo %s...\n",nome_arquivo);
 
@@ -166,8 +165,7 @@ Grafo *Carrega_Arquivo_Sem_Menu(int opcao, char *nome_arquivo)
 
 }
 
-Grafo *Carrega_Arquivo_Sem_Menu_Matriz(int opcao, char *nome_arquivo)
-{
+Grafo *Carrega_Arquivo_Sem_Menu_Matriz(int opcao, char *nome_arquivo){
 
     printf("\n\nCarregando arquivo %s...\n",nome_arquivo);
 
@@ -259,10 +257,15 @@ int main()
         ///IMPRIMINDO OS GRAFOS E O GRAU DE UM VERTICE
         Imprime_Grafo(grafo);
         printf("O grau do vertice %d = %d",grafo->Primeiro_Vertice->Id,grafo->Primeiro_Vertice->Grau_Vertice);
-
         Imprime_Grafo(grafoPonderado);
-        printf("O grau do vertice %d = %d",grafoPonderado->Primeiro_Vertice->Id,grafoPonderado->Primeiro_Vertice->Grau_Vertice);
+        printf("O grau do vertice %d = %d\n",grafoPonderado->Primeiro_Vertice->Id,grafoPonderado->Primeiro_Vertice->Grau_Vertice);
 
+        ///REMOCAO DE VERTICE E ARESTA DO GRAFO
+        Exclui_Vertice(grafoPonderado,grafoPonderado->Primeiro_Vertice->Id);
+        Exclui_Aresta(grafoPonderado->Primeiro_Vertice,grafoPonderado->Primeiro_Vertice->Primeira_Aresta->Id_Vertice);
+        Imprime_Grafo(grafoPonderado);
+        printf("Vertice %d foi excluido\n", grafoPonderado->Primeiro_Vertice->Id);
+        printf("Aresta %d foi excluida\n", grafoPonderado->Primeiro_Vertice->Primeira_Aresta->Id_Vertice);
 
         ///CRIANDO UMA INSTANCIA DE GRAFO PONDERADA E OUTRA NAO, UTILIZANDO MATRIZ DE ADJACENCIA
         Grafo *grafoPonderadoMatriz = Carrega_Arquivo_Sem_Menu_Matriz(1,arq_grafo_ponderado);
@@ -274,7 +277,16 @@ int main()
 
         Imprime_Grafo_Matriz(grafoMatriz);
         grau = calcula_grau_Matriz(grafoMatriz,1);
-        printf("O grau do vertice %d = %d",1,grau);
+        printf("O grau do vertice %d = %d\n",1,grau);
+
+        ///REMOCAO DE VERTICE E ARESTA DO GRAFO
+
+
+        Exclui_Vertice_Matriz(grafoMatriz,3);
+        Exclui_Aresta_Matriz(grafoMatriz,1,5);
+        Imprime_Grafo_Matriz(grafoMatriz);
+        printf("Vertice %d foi excluido\n",3);
+        printf("Aresta %d %d foi excluida\n",1,5);
 
 
 

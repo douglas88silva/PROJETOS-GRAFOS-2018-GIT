@@ -164,6 +164,11 @@ void Exclui_Aresta_Matriz(GrafoMatriz *grafo, int id1,int id2){
     int pos_id1 = busca_Vertice_Matriz(grafo,id1);
     int pos_id2 = busca_Vertice_Matriz(grafo,id2);
 
+    if((pos_id1== -1) || (pos_id2 ==-1))
+    {
+         printf("\nNao foi possivel remover esta aresta!");
+            return 0;
+    }
     grafo->Matriz[pos_id1][pos_id2] = 0;
     grafo->Matriz[pos_id2][pos_id1] = 0;
 
@@ -194,36 +199,45 @@ int calcula_grau_Matriz(GrafoMatriz *grafo, int id)
 //
 //    Excluir_Todas_Aresta_Vertice(grafo, vertice);
 //}
-//void Exclui_Vertice(Grafo *grafo, int Id){
-//    if (grafo == NULL || grafo->Primeiro_Vertice == NULL)
-//        return;
-//
-//    Vertice *aux = NULL;
-//
-//    for(Vertice *vertice = grafo->Primeiro_Vertice; vertice != NULL; vertice = vertice->Proximo_Vertice)
-//    {
-//        if (vertice->Id == Id)
-//        {
-//
-//            //Exclui todas as arestas antes de remover o vertice do grafo
-//            Excluir_Todas_Aresta_Vertice(grafo, vertice);
-//
-//            if (aux == NULL)
-//                grafo->Primeiro_Vertice = vertice->Proximo_Vertice;
-//            else
-//                aux->Proximo_Vertice = vertice->Proximo_Vertice;
-//
-//            free(vertice);
-//            break;          // Após terminar a exclusão, não é necessário continuar no laço
-//        }
-//        else
-//        {
-//            aux = vertice;
-//        }
-//    }
-//}
-//
-//
+void Exclui_Vertice_Matriz(GrafoMatriz *grafo, int Id){
+    if (grafo == NULL || grafo->Numero_Vertice == 0)
+        return;
+
+
+    int pos = busca_Vertice_Matriz(grafo,Id);
+
+    if(pos!=-1)
+    {
+
+        for(int i=pos;i<grafo->Numero_Vertice;i++)
+        {
+            grafo->vertice[i] = grafo->vertice[i+1];
+            // ACERTANDO AS COLUNAS
+           for(int j=pos;j<grafo->Numero_Vertice;j++)
+            {
+                if(i!=j)
+                {
+                    grafo->Matriz[i][j] = grafo->Matriz[i][j+1];
+                }
+
+            }
+            //ACERTANDO AS LINHAS
+            for(int j=pos;j<grafo->Numero_Vertice;j++)
+            {
+                if(i!=j)
+                {
+                    grafo->Matriz[j][i] = grafo->Matriz[j][i+1];
+                }
+
+            }
+
+        }
+        grafo->Numero_Vertice--;
+    }
+
+}
+
+
 //void Libera_Grafo(Grafo *grafo){
 //    if (grafo == NULL)
 //        return;
