@@ -19,7 +19,7 @@ void Carrega_Arquivo(){
     char nome_arquivo[100];
     int opcao = -1;
 
-    printf("Escolha uma das opcoes de Grado:");
+    printf("Escolha uma das opcoes de Grafo:");
     printf("\n\n1 - Grafo ponderado");
     printf("\n0 - Grafo nao ponderado\n");
 

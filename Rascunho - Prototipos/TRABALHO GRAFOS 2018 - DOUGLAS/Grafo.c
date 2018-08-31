@@ -3,22 +3,29 @@
 #include "Grafo.h"
 #include "Util.h"
 
-Grafo *Cria_Novo_Grafo()
-{
+Grafo *Cria_Novo_Grafo(){
     Grafo *novo_grafo = (Grafo*) malloc(sizeof(Grafo));
 
     novo_grafo->Numero_Vertice = 0;
     novo_grafo->Numero_Aresta = 0;
-    novo_grafo->Trabalha_Com_Hash = 0;
-    novo_grafo->Tamanho_Hash = 0;
-
     novo_grafo->Primeiro_Vertice = NULL;
-    novo_grafo->Hash_Vertice = NULL;
+    novo_grafo->PONDERADO = 0;
 
     return novo_grafo;
 }
-Vertice *Cria_Novo_Vertice(int Id)
-{
+
+Grafo *Cria_Novo_Grafo_Ponderado(int PONDERADO){
+    Grafo *novo_grafo = (Grafo*) malloc(sizeof(Grafo));
+
+    novo_grafo->Numero_Vertice = 0;
+    novo_grafo->Numero_Aresta = 0;
+    novo_grafo->Primeiro_Vertice = NULL;
+    novo_grafo->PONDERADO = PONDERADO;
+
+    return novo_grafo;
+}
+
+Vertice *Cria_Novo_Vertice(int Id){
     Vertice *novo_vertice = (Vertice*) malloc(sizeof(Vertice));
 
     novo_vertice->Id = Id;
@@ -30,8 +37,9 @@ Vertice *Cria_Novo_Vertice(int Id)
 
     return novo_vertice;
 }
-Aresta *Cria_Nova_Aresta(int Peso, int Id_Vertice)
-{
+
+Aresta *Cria_Nova_Aresta(int Peso, int Id_Vertice){
+
     Aresta *nova_aresta = (Aresta*) malloc(sizeof(Aresta));
 
     nova_aresta->Peso = Peso;
@@ -41,17 +49,9 @@ Aresta *Cria_Nova_Aresta(int Peso, int Id_Vertice)
 
     return nova_aresta;
 }
-HashVertice *Cria_Novo_Hash(Vertice *vertice)
-{
-    HashVertice *novoHash = (HashVertice*) malloc(sizeof(HashVertice));
 
-    novoHash->Vertice = vertice;
-    novoHash->Proximo_Hash_Vertice = NULL;
+void Insere_Vertice(Grafo *grafo, Vertice *vertice){
 
-    return novoHash;
-}
-void Insere_Vertice(Grafo *grafo, Vertice *vertice)
-{
     if (grafo == NULL)
         return;
 
@@ -67,11 +67,10 @@ void Insere_Vertice(Grafo *grafo, Vertice *vertice)
 
     grafo->Numero_Vertice++;
 
-    if (grafo->Trabalha_Com_Hash == 1)
-        Insere_Vertice_Hash(grafo, vertice);
 }
-void Insere_Aresta(Vertice *vertice, int Id_Vertice, int Peso_Aresta)
-{
+
+void Insere_Aresta(Vertice *vertice, int Id_Vertice, int Peso_Aresta){
+
     Aresta *aresta = Cria_Nova_Aresta(Peso_Aresta, Id_Vertice);
 
     if (vertice->Primeira_Aresta == NULL)
@@ -86,21 +85,20 @@ void Insere_Aresta(Vertice *vertice, int Id_Vertice, int Peso_Aresta)
 
     vertice->Grau_Vertice++;
 }
-Vertice *Busca_Vertice(Grafo *grafo, int Id)
-{
+
+Vertice *Busca_Vertice(Grafo *grafo, int Id){
+
     //verifica se o grafo é NULL ou vazio
     if (grafo == NULL || grafo->Numero_Vertice == 0)
     {
         return NULL;
     }
 
-    if (grafo->Trabalha_Com_Hash == 1)
-        return Busca_Vertice_Pelo_Hash(grafo, Id);
     else
         return Busca_Vertice_Pela_Lista_Adjacencia(grafo, Id);
 }
-Vertice *Busca_Vertice_Pela_Lista_Adjacencia(Grafo *grafo, int Id)
-{
+
+Vertice *Busca_Vertice_Pela_Lista_Adjacencia(Grafo *grafo, int Id){
     Vertice *v = grafo->Primeiro_Vertice;
 
     if (v->Id == Id)
@@ -111,29 +109,15 @@ Vertice *Busca_Vertice_Pela_Lista_Adjacencia(Grafo *grafo, int Id)
         v = v->Proximo_Vertice;
 
         if (v->Id == Id)
-            return v;
+        return v;
     }
 
     return NULL;
 }
-Vertice *Busca_Vertice_Pelo_Hash(Grafo *grafo, int Id)
-{
-    int idx = Id % grafo->Tamanho_Hash;
 
-    if (grafo->Hash_Vertice == NULL || grafo->Hash_Vertice[idx] == NULL)
-        return NULL;
+Aresta *Busca_Aresta(Vertice *vertice, int Id_Vertice){
 
-    for (HashVertice *aux = grafo->Hash_Vertice[idx]; aux != NULL; aux = aux->Proximo_Hash_Vertice)
-    {
-        if (aux->Vertice->Id == Id)
-            return aux->Vertice;
-    }
-
-    return NULL;
-}
-Aresta *Busca_Aresta(Vertice *vertice, int Id_Vertice)
-{
-    if (vertice == NULL || vertice->Primeira_Aresta == NULL)
+   if (vertice == NULL || vertice->Primeira_Aresta == NULL)
         return NULL;
 
     for (Aresta *aresta_auxiliar = vertice->Primeira_Aresta; aresta_auxiliar != NULL; aresta_auxiliar = aresta_auxiliar->Proxima_Aresta)
@@ -144,8 +128,9 @@ Aresta *Busca_Aresta(Vertice *vertice, int Id_Vertice)
 
     return NULL;
 }
-void Imprime_Todos_Vertices(Grafo *grafo)
-{
+
+void Imprime_Todos_Vertices(Grafo *grafo){
+
     if (grafo == NULL)
     {
         printf("Gravo nulo");
@@ -161,8 +146,9 @@ void Imprime_Todos_Vertices(Grafo *grafo)
     for (Vertice *v = grafo->Primeiro_Vertice; v != NULL; v = v->Proximo_Vertice)
         printf("%d\n", v->Id);
 }
-void Imprime_Todas_Arestas(Grafo *grafo)
-{
+
+void Imprime_Todas_Arestas(Grafo *grafo){
+
     if (grafo == NULL)
     {
         printf("Grafo nulo\n");
@@ -192,27 +178,31 @@ void Imprime_Todas_Arestas(Grafo *grafo)
         printf("\n");
     }
 }
-int Retorna_Ordem_Grafo(Grafo *grafo)
-{
+
+int Retorna_Ordem_Grafo(Grafo *grafo){
+
     if (grafo == NULL)
         return -1;
     else
         return grafo->Numero_Vertice;
 }
-void Popula_Grafo(Grafo *grafo, int Id1, int Id2, int Peso)
-{
+
+void Popula_Grafo(Grafo *grafo, int Id1, int Id2, int Peso){
+
+    //COMO O GRAFO NAO E DIRECIONADO SEMPRE CRIO UMA ARESTA 1 PARA 2 E 2 PARA 1
     Vertice *vertice1, *vertice2;
     Aresta *aresta_Id1_para_Id2, *aresta_Id2_para_Id1;
 
+    //VERIFICANDO SE OS VERTICES JÁ EXISTEM NO GRAFO
     vertice1 = Busca_Vertice(grafo, Id1);
+    vertice2 = Busca_Vertice(grafo, Id2);
 
+    //CASO NAO EXISTAM CRIA UM NOVO VERTICE E INSERE O MESMO NO GRAFO
     if (vertice1 == NULL)
     {
         vertice1 = Cria_Novo_Vertice(Id1);
         Insere_Vertice(grafo, vertice1);
     }
-
-    vertice2 = Busca_Vertice(grafo, Id2);
 
     if (vertice2 == NULL)
     {
@@ -220,95 +210,30 @@ void Popula_Grafo(Grafo *grafo, int Id1, int Id2, int Peso)
         Insere_Vertice(grafo, vertice2);
     }
 
+    //VERIFICANDO A EXISTENCIA DE ARESTAS ENTRE OS VERTICES
     aresta_Id1_para_Id2 = Busca_Aresta(vertice1, Id2);
+    aresta_Id2_para_Id1 = Busca_Aresta(vertice2, Id1);
 
+    //CASO O GRAFO NÃO SEJA PONDERADO ATRIBUI PESO 0 PARA TODOAS AS ARESTAS
+    if(!grafo->PONDERADO)
+    {
+        Peso=0;
+    }
+
+    //CASO NÃO EXISTA CRIA AS ARESTAS ENTRE ELES
     if (aresta_Id1_para_Id2 == NULL)
         Insere_Aresta(vertice1, Id2, Peso);
-
-    aresta_Id2_para_Id1 = Busca_Aresta(vertice2, Id1);
 
     if (aresta_Id2_para_Id1 == NULL)
         Insere_Aresta(vertice2, Id1, Peso);
 
     grafo->Numero_Aresta++;
 }
-void Aloca_Array_Hash(Grafo *grafo, int Total_Nos)
-{
-    int tamanho_hash = Retorna_Numero_Primo(Total_Nos / 3);
 
-    grafo->Hash_Vertice = (HashVertice*) malloc(tamanho_hash * sizeof(HashVertice));
 
-    if (grafo->Hash_Vertice == NULL)
-    {
-        printf("Memoria insuficiente para alocar o hash");
-        return;
-    }
-    else
-    {
-        grafo->Trabalha_Com_Hash = 1;
-        grafo->Tamanho_Hash = tamanho_hash;
+//FALTA IMPLEMENTAR UM METODO DE EXCLUIR VERTICE E ARESTA PASSANDO APENAS OS GRAFOS E OS ID'S
+void Exclui_Aresta(Vertice *vertice, int Id){
 
-        for (int i = 0; i < tamanho_hash; i++)
-        {
-            grafo->Hash_Vertice[i] = NULL;
-        }
-    }
-}
-void Insere_Vertice_Hash(Grafo *grafo, Vertice *vertice)
-{
-    int idx = vertice->Id % grafo->Tamanho_Hash;
-
-    HashVertice *hash = Cria_Novo_Hash(vertice);
-
-    if (grafo->Hash_Vertice[idx] == NULL)
-    {
-        grafo->Hash_Vertice[idx] = hash;
-    }
-    else
-    {
-        hash->Proximo_Hash_Vertice = grafo->Hash_Vertice[idx];
-        grafo->Hash_Vertice[idx] = hash;
-    }
-}
-void Imprime_Lista_Hash(Grafo *grafo)
-{
-    if (grafo == NULL)
-    {
-        printf("Grafo nulo\n");
-        return;
-    }
-
-    if (grafo->Trabalha_Com_Hash == 0 || grafo->Hash_Vertice == NULL)
-    {
-        printf("Grafo sem hash\n");
-        return;
-    }
-
-    printf("Tamanho hash:%d\n", grafo->Tamanho_Hash);
-
-    for (int i = 0; i < grafo->Tamanho_Hash; i++)
-    {
-        if (grafo->Hash_Vertice[i] == NULL)
-        {
-            printf("Posicao: %d  -  NULL\n", i);
-        }
-        else
-        {
-            printf("Posicao: %d - Lista Id: ", i);
-
-            for(HashVertice *hash = grafo->Hash_Vertice[i]; hash != NULL; hash = hash->Proximo_Hash_Vertice)
-            {
-                printf("%d ", hash->Vertice->Id);
-            }
-
-            printf("\n");
-
-        }
-    }
-
-}
-void Exclui_Aresta(Vertice *vertice, int Id)
-{
     if (vertice->Primeira_Aresta == NULL)
         return;
 
@@ -334,8 +259,8 @@ void Exclui_Aresta(Vertice *vertice, int Id)
 
     vertice->Grau_Vertice--;
 }
-void Excluir_Todas_Aresta_Vertice(Grafo *grafo, Vertice *vertice)
-{
+
+void Excluir_Todas_Aresta_Vertice(Grafo *grafo, Vertice *vertice){
     if (vertice == NULL || vertice->Primeira_Aresta == NULL)
         return;
 
@@ -344,35 +269,8 @@ void Excluir_Todas_Aresta_Vertice(Grafo *grafo, Vertice *vertice)
 
     Excluir_Todas_Aresta_Vertice(grafo, vertice);
 }
-void Exclui_Vertice_Hash(Grafo *grafo, int Id)
-{
-    int idx = Id % grafo->Tamanho_Hash;
 
-    if (grafo->Hash_Vertice == NULL || grafo->Hash_Vertice[idx] == NULL)
-        return;
-
-    HashVertice *aux = NULL;
-
-    for (HashVertice *hashVertice = grafo->Hash_Vertice[idx]; hashVertice != NULL; hashVertice = hashVertice->Proximo_Hash_Vertice)
-    {
-        if (hashVertice->Vertice->Id == Id)
-        {
-            if (aux ==   NULL)
-                grafo->Hash_Vertice[idx] = grafo->Hash_Vertice[idx]->Proximo_Hash_Vertice;
-            else
-                aux->Proximo_Hash_Vertice = hashVertice->Proximo_Hash_Vertice;
-
-            free(hashVertice);
-            break;          // Após terminar a exclusão, não é necessário continuar no laço
-        }
-        else
-        {
-            aux = hashVertice;
-        }
-    }
-}
-void Exclui_Vertice(Grafo *grafo, int Id)
-{
+void Exclui_Vertice(Grafo *grafo, int Id){
     if (grafo == NULL || grafo->Primeiro_Vertice == NULL)
         return;
 
@@ -403,15 +301,19 @@ void Exclui_Vertice(Grafo *grafo, int Id)
         }
     }
 }
-int Retorna_Grau_Vertice(Vertice *vertice)
-{
+
+int Retorna_Grau_Vertice(Vertice *vertice){
     if (vertice == NULL)
         return -1;
     else
         return vertice->Grau_Vertice;
 }
-int Verificar_K_Regularidade_Grafo(Grafo *grafo, int k)
-{
+
+int Verificar_K_Regularidade_Grafo(Grafo *grafo, int k){
+
+
+    //RETORNA "1" SE TODOS OS VERTICES TEM MESMO GRAU E "0" CASO CONTRARIO
+
     if (grafo == NULL || grafo->Primeiro_Vertice == NULL)
         return 0;
 
@@ -423,22 +325,28 @@ int Verificar_K_Regularidade_Grafo(Grafo *grafo, int k)
 
     return 1;
 }
-int Verificar_Grafo_Trivial(Grafo *grafo)
-{
+
+int Verificar_Grafo_Trivial(Grafo *grafo){
+
+    // GRAFO TRIVIAL E UM GRAFO SEM VERTICE
+    //RETORNA "0" SE O NAO FOR VAZIO E "1" CASO CONTRARIO
     if (grafo == NULL || grafo->Numero_Vertice != 1)
         return 0;
     else
         return 1;
 }
-int Verificar_Grafo_Nulo(Grafo *grafo)
-{
+
+int Verificar_Grafo_Nulo(Grafo *grafo){
+
+    //GRAFO NULO E UM GRAFO SEM ARESTA
     if (grafo == NULL || grafo->Numero_Vertice == 0)
         return 1;
     else
         return 0;
 }
-void Imprimir_Vizinhanca_Aberta(Vertice *vertice)
-{
+
+void Imprimir_Vizinhanca_Aberta(Vertice *vertice){
+
     if (vertice == NULL)
         return;
 
@@ -452,9 +360,11 @@ void Imprimir_Vizinhanca_Aberta(Vertice *vertice)
 
     for (Aresta *aresta = vertice->Primeira_Aresta; aresta != NULL; aresta = aresta->Proxima_Aresta)
         printf("%d\n", aresta->Id_Vertice);
+
 }
-void Imprimir_Vizinhanca_Fechada(Vertice *vertice)
-{
+
+void Imprimir_Vizinhanca_Fechada(Vertice *vertice){
+
     if (vertice == NULL)
         return;
 
@@ -467,9 +377,10 @@ void Imprimir_Vizinhanca_Fechada(Vertice *vertice)
     Imprimir_Vizinhanca_Aberta(vertice);
 
     printf("%d\n", vertice->Id);
+
 }
-int Verificar_Grafo_Completo(Grafo *grafo)
-{
+
+int Verificar_Grafo_Completo(Grafo *grafo){
     if (Verificar_Grafo_Nulo(grafo) == 1 || Verificar_Grafo_Trivial(grafo) == 1)
         return 1;
     else
@@ -477,8 +388,8 @@ int Verificar_Grafo_Completo(Grafo *grafo)
 }
 
 
-void Libera_Grafo(Grafo *grafo)
-{
+void Libera_Grafo(Grafo *grafo){
+
     if (grafo == NULL)
         return;
 
@@ -489,41 +400,24 @@ void Libera_Grafo(Grafo *grafo)
         Libera_Hash_Grafo(grafo);
 
     free(grafo);
+
 }
-void Libera_Lista_Arestas(Aresta *aresta)
-{
+
+void Libera_Lista_Arestas(Aresta *aresta){
     if (aresta == NULL)
         return;
 
     Libera_Lista_Arestas(aresta->Proxima_Aresta);
     free(aresta);
 }
-void Libera_Lista_Verice(Vertice *vertice)
-{
+
+void Libera_Lista_Verice(Vertice *vertice){
     if (vertice == NULL)
         return;
 
     Libera_Lista_Verice(vertice->Proximo_Vertice);
     Libera_Lista_Arestas(vertice->Primeira_Aresta);
     free(vertice);
-}
-void Libera_Hash_Grafo(Grafo *grafo)
-{
-    for (int i = 0; i < grafo->Tamanho_Hash; i++)
-    {
-        if (grafo->Hash_Vertice[i] != NULL)
-            free(grafo->Hash_Vertice[i]);
-    }
-
-    free(grafo->Hash_Vertice);
-}
-void Libera_Lista_Hash(HashVertice *hashVertice)
-{
-    if (hashVertice == NULL)
-        return;
-
-    Libera_Lista_Hash(hashVertice->Proximo_Hash_Vertice);
-    free(hashVertice);
 }
 
 //************** IMPLEMENTANDO***********//

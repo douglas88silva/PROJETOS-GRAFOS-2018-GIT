@@ -6,20 +6,15 @@
  * @author
  * @version
  * @brief   Estrutura Grafo.
- *          Estrutura para armazenar alguns dados do grafo, lista de vértices e hash.
- *          Possui também variáveis de controle para determinar se iremos trabalhar com hash ou não.
  */
 struct grafo
 {
     int Numero_Vertice;               /**< Número de vértices do grafo. Será incrementada toda vez que for adicionado um novo vértice. */
     int Numero_Aresta;                /**< Número de arestas do grafo. Será incrementada toda vez que for adicionado uma aresta entre dois vértices. */
-
-    int Trabalha_Com_Hash;            /**< Variável que irá controlar se utilizaremos hash ou não. Será criada com valor 0 e, caso comece a trabalhar com hash, irá mudar o valor para 1. */
-    int Tamanho_Hash;                 /**< Tamanho do hash que será armazenado em memória. O tamanho do hash é definido como o próximo número primo após aproximadamente um terço do número de vértices com que iremos trabalhar.*/
-
+    int PONDERADO;                    /**< (1) - PONDERADO / (0) - NÃO PONDERADO. */
     struct vertice *Primeiro_Vertice; /**< Ponteiro para o primero vértice da lista de adjacência do grafo.*/
 
-    struct hashVertice **Hash_Vertice;    /**< Ponteiro para o hash que iremos trabalhar.*/
+
 };
 typedef struct grafo Grafo;
 
@@ -34,9 +29,7 @@ struct vertice
 {
     int Id;                          /**< Id do vértice, usado para identificar cada vértice no grafo.*/
     int Grau_Vertice;                /**< Grau do vértice. Incrementado a medida com que se adiciona arestas no vértice.*/
-
     struct aresta *Primeira_Aresta;  /**< Ponteiro para a lista de adjacência de arestas.*/
-
     struct vertice *Proximo_Vertice; /**< Ponteiro para o próximo vértice da lista de adjacência.*/
 };
 typedef struct vertice Vertice;
@@ -52,24 +45,9 @@ struct aresta
 {
     int Peso;                      /**< Peso da aresta.*/
     int Id_Vertice;                /**< Identificador do vértice que está sendo ligado pela aresta.*/
-
     struct aresta *Proxima_Aresta; /**< Ponteiro para a próxima aresta na lista de adjacência.*/
 };
 typedef struct aresta Aresta;
-
-/**
- * @file    Grafo.h
- * @author
- * @version
- * @brief   Estrutura HashVertice
- *          Estrutura utilizada para armazenar ponteiro para os vértices, afim de melhorar a performance de busca dentro do grafo.
- */
-struct hashVertice
-{
-    struct vertice *Vertice;         /**< Ponteiro para o vértice dentro do hash.*/
-    struct HashVertice *Proximo_Hash_Vertice; /**< Ponteiro para o próximo vértice, dentro da lista.*/
-};
-typedef struct hashVertice HashVertice;
 
 
 /**
@@ -80,8 +58,7 @@ typedef struct hashVertice HashVertice;
  *          Cria um novo grafo em memória, aloca o grafo e inicializa suas variáveis. Por fim, retorna o grafo criado.
  * @return  Grafo vazio.
  */
-Grafo *Cria_Novo_Grafo();
-
+Grafo *Cria_Novo_Grafo(int PONDERADO);
 
 /**
  * @file      Grafo.h
@@ -94,7 +71,6 @@ Grafo *Cria_Novo_Grafo();
  */
 Vertice *Cria_Novo_Vertice(int Id);
 
-
 /**
  * @file              Grafo.c
  * @author
@@ -106,18 +82,6 @@ Vertice *Cria_Novo_Vertice(int Id);
  * @return            Nova aresta com peso e ligada ao vétice com Id passado por parâmetro.
  */
 Aresta *Cria_Nova_Aresta(int Peso, int Id_Vertice);
-
-
-/**
- * @file           Grafo.c
- * @author
- * @version
- * @brief          Cria novo hash.
- *                 Cria novo hash em memória, aloca o hash e inicializa suas variáveis.
- * @param vertice  Ponteiro para vértice que será inserido no hash.
- * @return         Novo hash apontando para o vértice passado por parâmetro.
- */
-HashVertice *Cria_Novo_Hash(Vertice *vertice);
 
 
 /**
@@ -173,19 +137,6 @@ Vertice *Busca_Vertice(Grafo *grafo, int Id);
  */
 Vertice *Busca_Vertice_Pela_Lista_Adjacencia(Grafo *grafo, int Id);
 
-
-/**
- * @file         Grafo.h
- * @author
- * @version
- * @brief        Busca pelo hash do grafo.
- *               É feito o cálculo do index do hash que corresponde ao Id passado por parâmetro. Após isso, será feita a busca pelo hash, no index informado.
- *               Caso o Id passado por parâmetro não seja encontrado, verifica-se o próximo item dentro do index calculado.
- * @param grafo  Grafo onde será pesquisado o vértice.
- * @param Id     Identificador do vértice pelo qual será feita a busca.
- * @return       NULL caso não encontre o vértice ou um ponteiro para o vértice, caso ele seja encontrado.
- */
-Vertice *Busca_Vertice_Pelo_Hash(Grafo *grafo, int Id);
 
 
 /**
@@ -249,42 +200,6 @@ void Popula_Grafo(Grafo *grafo, int Id1, int Id2, int Peso);
 
 
 /**
- * @file            Grafo.h
- * @author
- * @version
- * @brief           Aloca espaço para o hash dentro do grafo, altera a variável do grafo Trabalha_Com_Hash para 1 e, guarda o tamanho do hash.
- * @param grafo     Grafo que irá trabalhar com hash.
- * @param Total_Nos Inteiro que será utilizado para calcular o tamanho do hash.
- */
-void Aloca_Array_Hash(Grafo *grafo, int Total_Nos);
-
-
-/**
- * @file            Grafo.h
- * @author
- * @version
- * @brief           Função para inserir o vértice no hash do grafo.
- *                  É feito o cálculo do index onde o ponteiro do vértice será inserido. Por fim, insere-se o vértice nessa posição.
- *                  Caso não tenha nenhum ponteiro armazenado nessa posição, insere-o sem nenhum tratamento.
- *                  Caso contrário, insere o ponteiro na primeira posição da lista.
- * @param grafo     Grafo onde está inserido o vértice.
- * @param vertice   Ponteiro para vértice que será guardado no hash.
- */
-void Insere_Vertice_Hash(Grafo *grafo, Vertice *vertice);
-
-
-/**
- * @file            Grafo.h
- * @author
- * @version
- * @brief           Função para imprimir todos os vértices adicionados no hash.
- *                  O formato da impressão é a posição do index seguido por todos os Ids dos vértices que estão inseridos dentro dele.
- * @param  grafo    Grafo que terá seus vértice impressos.
- */
-void Imprime_Lista_Hash(Grafo *grafo);
-
-
-/**
  * @file        Grafo.h
  * @author
  * @version
@@ -320,26 +235,6 @@ void Libera_Lista_Verice(Vertice *vertice);
 
 
 /**
- * @file            Grafo.h
- * @author
- * @version
- * @brief           Função para liberar o array de hash do grafo.
- * @param grafo     Array de hash que será liberada.
- */
-void Libera_Hash_Grafo(Grafo *grafo);
-
-
-/**
- * @file                Grafo.h
- * @author
- * @version
- * @brief               Função recursiva para liberar a lista de adjacência de hash, passada por parâmetro.
- * @param hashVertice   Lista de aresta que será liberada.
- */
-void Libera_Lista_Hash(HashVertice *hashVertice);
-
-
-/**
  * @file            Grafo.c
  * @author
  * @version
@@ -359,17 +254,6 @@ void Exclui_Aresta(Vertice *vertice, int Id);
  * @param *vertice  Vértice a ser retiradas as arestas.
  */
 void Excluir_Todas_Aresta_Vertice(Grafo *grafo, Vertice *vertice);
-
-
-/**
- * @file            Grafo.c
- * @author
- * @version
- * @brief           Exclui vértice do hash no grafo passado por parâmetro.
- * @param *grafo    Ponteiro para o grafo.
- * @param *Id       Id do vértice a ser excluído.
- */
-void Exclui_Vertice_Hash(Grafo *grafo, int Id);
 
 
 /**

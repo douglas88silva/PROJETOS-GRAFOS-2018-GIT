@@ -35,10 +35,10 @@ void Opcoes_Menu()
     printf("  8 - Imprimir grafo\n");
     printf("  9 - Imprimir vertices\n");
     printf(" 10 - Imprimir arestas\n");
-    printf(" 11 - Imprimir hash\n");
+    //printf(" 11 - Imprimir hash\n");
     printf(" 12 - Busca vertice\n");
     printf(" 13 - Busca aresta\n");
-    printf(" 14 - Busca sem hash\n");
+    //printf(" 14 - Busca sem hash\n");
     printf(" 15 - Retornar grau do no\n");//Caso seja digrafo grau entrada e saida
     printf(" 16 - Verifica a k-regularidade\n");
     printf(" 17 - Informa a ordem do grafo\n");
@@ -121,7 +121,7 @@ void Opcoes_Menu()
             break;
 
         case 11:
-            Opcao_Imprimir_Hash();
+            //Opcao_Imprimir_Hash();
             break;
 
 
@@ -135,7 +135,7 @@ void Opcoes_Menu()
             break;
 
         case 14:
-            Opcao_Busca_Sem_Hash();
+           // Opcao_Busca_Sem_Hash();
             break;
 
         case 15:
@@ -307,6 +307,20 @@ void Opcao_Carrega_Arquivo()
         }
     }
 
+
+    int opcao = -1;
+    printf("Escolha uma das opcoes de Grafo:");
+    printf("\n\n1 - Grafo ponderado");
+    printf("\n0 - Grafo nao ponderado\n");
+
+    while(opcao < 0 || opcao > 1)
+    {
+        scanf("%d",&opcao);
+        setbuf(stdin, NULL);
+    }
+
+
+
     char nome_arquivo[100];
 
     printf("Digite o nome do arquivo completo...\n");
@@ -323,7 +337,17 @@ void Opcao_Carrega_Arquivo()
 
     printf("Arquivo aberto...\n");
 
-    grafo = Cria_Novo_Grafo();
+
+    //CASO SEJA GRAFO PONDERADO
+    if(opcao)
+    {
+        grafo = Cria_Novo_Grafo_Ponderado(opcao);
+    }
+    else
+    {
+        grafo = Cria_Novo_Grafo();
+    }
+
 
     printf("Grafo criado...\n");
 
@@ -332,21 +356,37 @@ void Opcao_Carrega_Arquivo()
     fscanf(arquivo, "%d", &total_vertice_arquivo);
     printf("Total de vertices do arquivo: %d\n", total_vertice_arquivo);
 
-    printf("\nIniciando hash...\n");
 
-    Aloca_Array_Hash(grafo, total_vertice_arquivo);
-
-    int id1, id2, peso = 0;
-    int retorno;
-    while (!feof(arquivo))
+    if(grafo->PONDERADO)
     {
-        retorno = fscanf(arquivo, "%d %d", &id1, &id2);
-        if (retorno != -1)
+        int id1, id2, peso;
+        int retorno;
+        while (!feof(arquivo))
         {
-            printf("Inserindo aresta entre %d e %d\n", id1, id2);
-            Popula_Grafo(grafo, id1, id2, peso);
+            retorno = fscanf(arquivo, "%d %d %d", &id1, &id2,&peso);
+            if (retorno != -1)
+            {
+                printf("Inserindo aresta entre %d e %d = Peso %d\n", id1, id2, peso);
+                Popula_Grafo(grafo, id1, id2, peso);
+            }
         }
     }
+    else
+    {
+        int id1, id2,peso = 0;
+        int retorno;
+        while (!feof(arquivo))
+        {
+            retorno = fscanf(arquivo, "%d %d", &id1, &id2);
+            if (retorno != -1)
+            {
+                printf("Inserindo aresta entre %d e %d = Peso %d\n", id1, id2, peso);
+                Popula_Grafo(grafo, id1, id2, peso);
+            }
+        }
+    }
+
+
 
     Fecha_Arquivo(arquivo);
 
@@ -356,8 +396,7 @@ void Opcao_Carrega_Arquivo()
 }
 void Opcao_Salvar_Arquivo(){}
 
-void Opcao_Criar_Grafo()
-{
+void Opcao_Criar_Grafo(){
     int resposta;
 
     if (grafo != NULL)
@@ -378,16 +417,13 @@ void Opcao_Criar_Grafo()
 
     int tamanho_grafo = 0;
 
-    printf("Informar tamanho aproximado do grafo? (digite zero caso nao queira trabalhar com hash)\n");
+    printf("Informar tamanho aproximado do grafo? \n");
 
     scanf("%d", &tamanho_grafo);
 
-    if (tamanho_grafo > 0)
-        Aloca_Array_Hash(grafo, tamanho_grafo);
-
 }
-void Opcao_Inserir_Vertice()
-{
+
+void Opcao_Inserir_Vertice(){
     if (grafo == NULL)
     {
         printf("Eh necessario criar um grafo antes de inserir o vertice!\n");
@@ -426,8 +462,8 @@ void Opcao_Inserir_Vertice()
         }
     }
 }
-void Opcao_Inserir_Aresta()
-{
+
+void Opcao_Inserir_Aresta(){
         int id1, id2, peso;
     Vertice *vertice1, *vertice2;
 
@@ -481,8 +517,8 @@ void Opcao_Inserir_Aresta()
 
     grafo->Numero_Aresta++;
 }
-void Opcao_Excluir_Vertice()
-{
+
+void Opcao_Excluir_Vertice(){
     int id;
     Vertice *vertice;
     printf("Informe o Id do vertice...\n");
@@ -491,8 +527,8 @@ void Opcao_Excluir_Vertice()
 
     Exclui_Vertice(grafo, id);
 }
-void Opcao_Excluir_Aresta()
-{
+
+void Opcao_Excluir_Aresta(){
     int id;
     Vertice *vertice;
     Aresta *aresta;
@@ -521,8 +557,8 @@ void Opcao_Excluir_Aresta()
 
     Exclui_Aresta(vertice, id);
 }
-void Opcao_Imprimir_Grafo()
-{
+
+void Opcao_Imprimir_Grafo(){
     printf("Dados do grafo...\n\n");
 
     if (grafo == NULL)
@@ -540,32 +576,18 @@ void Opcao_Imprimir_Grafo()
 
     Opcao_Imprimir_Hash();
 }
-void Opcao_Imprimir_Vertices()
-{
+
+void Opcao_Imprimir_Vertices(){
     printf("\nLista de vertices pela lista de adjacencia...\n");
     Imprime_Todos_Vertices(grafo);
 }
-void Opcao_Imprimir_Arestas()
-{
+
+void Opcao_Imprimir_Arestas(){
     printf("\nLista de arestas, vertice por vertice...\n");
     Imprime_Todas_Arestas(grafo);
 }
-void Opcao_Imprimir_Hash()
-{
 
-
-    if (grafo->Trabalha_Com_Hash == 1)
-    {
-        printf("\nLista hash...\n");
-        Imprime_Lista_Hash(grafo);
-    }
-    else
-    {
-        printf("\nEsse grafo nao trabalha com hash...\n");
-    }
-}
-void Opcao_Busca_Vertice()
-{
+void Opcao_Busca_Vertice(){
     clock_t Ticks[2];
     Ticks[0] = clock();
     //O código a ter seu tempo de execução medido ficaria neste ponto.
@@ -591,8 +613,8 @@ void Opcao_Busca_Vertice()
     printf("Tempo gasto: %g ms.", Tempo);
 
 }
-void Opcao_Busca_Aresta()
-{
+
+void Opcao_Busca_Aresta(){
     int id;
     Vertice *vertice;
     Aresta *aresta;
@@ -633,36 +655,8 @@ void Opcao_Busca_Aresta()
 
 
 }
-void Opcao_Busca_Sem_Hash()
-{
-    clock_t Ticks[2];
-    Ticks[0] = clock();
-    //O código a ter seu tempo de execução medido ficaria neste ponto.
 
-    grafo->Trabalha_Com_Hash = 0;
-
-    int id;
-    Vertice *vertice;
-
-    printf("Informe o id a ser pesquisado...\n");
-
-    scanf("%d", &id);
-
-    for (int i = 0; i < 1000; i++)
-        vertice = Busca_Vertice(grafo, id);
-
-    if (vertice == NULL)
-        printf("Vertice nao encontrado.\n");
-    else
-        printf("Vertice %d encontrado, com grau %d.\n", vertice->Id, vertice->Grau_Vertice);
-
-    Ticks[1] = clock();
-    double Tempo = (Ticks[1] - Ticks[0]) * 1000.0 / CLOCKS_PER_SEC;
-
-    printf("Tempo gasto: %g ms.", Tempo);
-}
-void Opcao_Retorna_Grau_No()
-{
+void Opcao_Retorna_Grau_No(){
      int id, grau;
     Vertice *vertice;
     printf("Informe o Id do vertice...\n");
@@ -678,8 +672,8 @@ void Opcao_Retorna_Grau_No()
     else
         printf("Grau do vertice %d -> %d", id, grau);
 }
-void Opcao_Verifica_K_regularidade()
-{
+
+void Opcao_Verifica_K_regularidade(){
      int k = 0;
 
     printf("Informar o valor de k...\n");
@@ -692,8 +686,8 @@ void Opcao_Verifica_K_regularidade()
     else
         printf("Grafo eh %d-regular\n", k);
 }
-void Opcao_Retorna_Ordem_Grafo()
-{
+
+void Opcao_Retorna_Ordem_Grafo(){
     if (grafo == NULL)
     {
         printf("Grafo nulo.\n");
@@ -703,8 +697,8 @@ void Opcao_Retorna_Ordem_Grafo()
         printf("Ordem do grafo: %d\n", Retorna_Ordem_Grafo(grafo));
     }
 }
-void Opcao_Informa_Grafo_eh_Trivial()
-{
+
+void Opcao_Informa_Grafo_eh_Trivial(){
       int trivial = Verificar_Grafo_Trivial(grafo);
 
     if (trivial == 1)
@@ -712,8 +706,8 @@ void Opcao_Informa_Grafo_eh_Trivial()
     else
         printf("Grafo nao eh trivial\n");
 }
-void Opcao_Informa_Grafo_eh_nulo()
-{
+
+void Opcao_Informa_Grafo_eh_nulo(){
        int nulo = Verificar_Grafo_Nulo(grafo);
 
     if (nulo == 1)
@@ -721,8 +715,8 @@ void Opcao_Informa_Grafo_eh_nulo()
     else
         printf("Grafo nao eh nulo\n");
 }
-void Opcao_Vizinhaca_Aberta_No()
-{
+
+void Opcao_Vizinhaca_Aberta_No(){
 
     int id;
     Vertice *vertice;
@@ -737,8 +731,8 @@ void Opcao_Vizinhaca_Aberta_No()
     else
         Imprimir_Vizinhanca_Aberta(vertice);
 }
-void Opcao_Vizinhaca_Fechada_No()
-{
+
+void Opcao_Vizinhaca_Fechada_No(){
       int id;
     Vertice *vertice;
     printf("Informe o Id do vertice...\n");
@@ -755,8 +749,7 @@ void Opcao_Vizinhaca_Fechada_No()
 
 void Opcao_Eh_Multigrafo(){}
 
-void Opcao_Eh_Grafo_Completo()
-{
+void Opcao_Eh_Grafo_Completo(){
         int completo = Verificar_Grafo_Completo(grafo);
 
     if (completo == 1)
