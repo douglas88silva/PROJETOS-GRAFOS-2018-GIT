@@ -167,7 +167,7 @@ void Imprime_Todas_Arestas(Grafo *grafo){
 
         if (v->Primeira_Aresta == NULL)
         {
-            printf("sem vertice");
+            printf("NULL");
         }
         else
         {
