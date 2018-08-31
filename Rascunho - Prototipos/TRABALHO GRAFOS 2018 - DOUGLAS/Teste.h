@@ -13,8 +13,10 @@ void teste3();
 /// teste: le um arquivo de entrada, insere os vertices e as arestas, imprime o grafo resultante
 void teste4(char *nome_arquivo);
 
-/// teste: le um arquivo de entrada, insere os vertices e as arestas, imprime o grafo resultante. trabalha com hash
+/// teste: le um arquivo de entrada, insere os vertices e as arestas, imprime o grafo ponderado resultante.
 void teste5(char *nome_arquivo);
+
+
 
 
 #endif // TESTE_H_INCLUDED

@@ -33,49 +33,8 @@ void teste3(){
     Imprime_Todos_Vertices(g);
 }
 
+
 void teste4(char *nome_arquivo){
-    FILE *arquivo = Abre_Arquivo(nome_arquivo);
-
-    if (arquivo == NULL)
-        return;
-
-    printf("Arquivo aberto...\n");
-
-    Grafo *grafo = Cria_Novo_Grafo();
-
-    printf("Grafo criado... ordem do grafo: %d\n", Retorna_Ordem_Grafo(grafo));
-
-    int total_vertice_arquivo = 0;
-
-    fscanf(arquivo, "%d", &total_vertice_arquivo);
-
-    printf("Total de vertices do arquivo: %d\n", total_vertice_arquivo);
-
-    int id1, id2, peso = 0;
-    int retorno;
-    while (!feof(arquivo))
-    {
-        retorno = fscanf(arquivo, "%d %d", &id1, &id2);
-        if (retorno != -1)
-        {
-            printf("Inserindo aresta entre %d e %d\n", id1, id2);
-            Popula_Grafo(grafo, id1, id2, peso);
-        }
-    }
-
-    printf("Grafo populado com sucesso!\n");
-    printf("Total de vertices cadastrados: %d\n", grafo->Numero_Vertice);
-    printf("Total de arestas cadastradas: %d\n", grafo->Numero_Aresta);
-    printf("Imprimindo grafo lido...\n\n");
-
-    Imprime_Todos_Vertices(grafo);
-
-    Imprime_Todas_Arestas(grafo);
-
-    Libera_Grafo(grafo);
-}
-
-void teste5(char *nome_arquivo){
 
     FILE *arquivo = Abre_Arquivo(nome_arquivo);
 
@@ -123,7 +82,7 @@ void teste5(char *nome_arquivo){
 }
 
 
-void teste6(char *nome_arquivo){
+void teste5(char *nome_arquivo){
 
     FILE *arquivo = Abre_Arquivo(nome_arquivo);
 
