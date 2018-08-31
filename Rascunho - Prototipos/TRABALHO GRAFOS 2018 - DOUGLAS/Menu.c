@@ -574,7 +574,6 @@ void Opcao_Imprimir_Grafo(){
 
     Opcao_Imprimir_Arestas();
 
-    Opcao_Imprimir_Hash();
 }
 
 void Opcao_Imprimir_Vertices(){

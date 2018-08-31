@@ -58,7 +58,17 @@ typedef struct aresta Aresta;
  *          Cria um novo grafo em memória, aloca o grafo e inicializa suas variáveis. Por fim, retorna o grafo criado.
  * @return  Grafo vazio.
  */
-Grafo *Cria_Novo_Grafo(int PONDERADO);
+Grafo *Cria_Novo_Grafo();
+
+/**
+ * @file    Grafo.h
+ * @author
+ * @version
+ * @brief   Cria um novo grafo vazio.
+ *          Cria um novo grafo ponderado em memória, aloca o grafo e inicializa suas variáveis. Por fim, retorna o grafo criado.
+ * @return  Grafo vazio.
+ */
+Grafo *Cria_Novo_Grafo_Ponderado(int PONDERADO);
 
 /**
  * @file      Grafo.h

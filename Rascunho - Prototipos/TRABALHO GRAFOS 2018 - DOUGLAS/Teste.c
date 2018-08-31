@@ -100,7 +100,6 @@ void teste5(char *nome_arquivo)
 
     printf("\nTrabalhando com hash...\n");
 
-    Aloca_Array_Hash(grafo, total_vertice_arquivo);
 
     int id1, id2, peso = 0;
     int retorno;
@@ -123,8 +122,6 @@ void teste5(char *nome_arquivo)
 
     Imprime_Todas_Arestas(grafo);
 
-    printf("\n\nImprimindo hash...\n\n");
-    Imprime_Lista_Hash(grafo);
 
     Libera_Grafo(grafo);
 

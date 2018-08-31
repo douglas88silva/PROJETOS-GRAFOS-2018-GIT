@@ -280,9 +280,6 @@ void Exclui_Vertice(Grafo *grafo, int Id){
     {
         if (vertice->Id == Id)
         {
-            //Exclui todas o vertice do hash
-            if (grafo->Trabalha_Com_Hash == 1)
-                Exclui_Vertice_Hash(grafo, Id);
 
             //Exclui todas as arestas antes de remover o vertice do grafo
             Excluir_Todas_Aresta_Vertice(grafo, vertice);
@@ -395,9 +392,6 @@ void Libera_Grafo(Grafo *grafo){
 
     if (grafo->Primeiro_Vertice != NULL)
         Libera_Lista_Verice(grafo->Primeiro_Vertice);
-
-    if (grafo->Hash_Vertice != NULL)
-        Libera_Hash_Grafo(grafo);
 
     free(grafo);
 
